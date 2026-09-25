@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteRule ^\.well-known/(openid-configuration|oauth-authorization-server)$ oauth/authorization-server.php [L]
+    RewriteRule ^\.well-known/oauth-protected-resource$ oauth/protected-resource.php [L]
+    RewriteRule ^vendor/ - [F,L]
+</IfModule>
+
+<IfModule mod_setenvif.c>
+    SetEnvIfNoCase Authorization "(.+)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
+<FilesMatch "^(composer\.(json|lock)|bootstrap\.php)$">
+    Require all denied
+</FilesMatch>
