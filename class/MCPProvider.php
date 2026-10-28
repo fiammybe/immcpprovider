@@ -100,7 +100,7 @@ class MCPProvider
     private function listObjects(string $moduleName, string $handlerName, array $params): array
     {
         $handler = $this->resolveHandler($moduleName, $handlerName);
-        $criteria = $this->buildCriteria($params);
+        $criteria = $this->buildCriteria($handler, $params);
         $objects = $handler->getObjects($criteria);
         $fields = $this->normalizeRequestedFields($params['fields'] ?? null);
 
@@ -209,6 +209,9 @@ class MCPProvider
 
     private function resolveHandler(string $moduleName, string $handlerName): object
     {
+        if (!preg_match('/\A[a-zA-Z0-9_-]+\z/D', $handlerName)) {
+            throw new InvalidArgumentException('Invalid handler name.');
+        }
         $module = $this->resolveModule($moduleName);
         if (method_exists($module, 'registerClassPath')) {
             $module->registerClassPath();
@@ -229,6 +232,9 @@ class MCPProvider
 
     private function resolveModule(string $moduleName): object
     {
+        if (!preg_match('/\A[a-zA-Z0-9_-]+\z/D', $moduleName)) {
+            throw new InvalidArgumentException('Invalid module name.');
+        }
         $module = icms::handler('icms_module')->getByDirname($moduleName);
         if (!is_object($module)) {
             throw new RuntimeException("Module '{$moduleName}' is not installed.");
@@ -258,28 +264,29 @@ class MCPProvider
         ];
     }
 
-    private function buildCriteria(array $params): icms_db_criteria_Compo
+    private function buildCriteria(object $handler, array $params): icms_db_criteria_Compo
     {
         $criteria = new icms_db_criteria_Compo();
+        $fields = $this->getObjectVars($handler->create());
         $filters = $params['filters'] ?? [];
 
         if (!is_array($filters)) {
             throw new InvalidArgumentException('filters must be an array.');
         }
         foreach ($filters as $field => $value) {
-            if (!is_string($field) || $field === '') {
-                throw new InvalidArgumentException('Filter field names must be non-empty strings.');
-            }
-            if (is_array($value) || is_object($value)) {
+            $this->validateCriteriaField($field, $fields);
+            if (!is_scalar($value) && $value !== null) {
                 throw new InvalidArgumentException("Filter '{$field}' must be a scalar value.");
             }
-            $criteria->add(new icms_db_criteria_Item($field, $value));
+            require_once __DIR__ . '/MCPSafeCriteriaItem.php';
+            $criteria->add(new MCPSafeCriteriaItem($field, $value));
         }
 
         $criteria->setStart(max(0, (int) ($params['start'] ?? 0)));
         $criteria->setLimit(max(0, (int) ($params['limit'] ?? 25)));
 
-        if (!empty($params['sort']) && is_string($params['sort'])) {
+        if (isset($params['sort']) && $params['sort'] !== '') {
+            $this->validateCriteriaField($params['sort'], $fields);
             $criteria->setSort($params['sort']);
         }
         if (!empty($params['order']) && is_string($params['order'])) {
@@ -287,6 +294,15 @@ class MCPProvider
         }
 
         return $criteria;
+    }
+
+    private function validateCriteriaField(mixed $field, array $fields): void
+    {
+        if (!is_string($field) || !preg_match('/\A[a-zA-Z_][a-zA-Z0-9_]*\z/D', $field)
+            || !array_key_exists($field, $fields)
+            || (is_array($fields[$field]) && !($fields[$field]['persistent'] ?? true))) {
+            throw new InvalidArgumentException('Unknown or invalid criteria field.');
+        }
     }
 
     private function fetchObject(object $handler, mixed $id): object
