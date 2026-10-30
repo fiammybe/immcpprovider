@@ -21,8 +21,10 @@ final class IpfGateway
 
     private const SENSITIVE_FIELDS = ['pass', 'pass_expired', 'salt', 'enc_type', 'actkey', 'token'];
 
-    public function __construct(private readonly AccessPolicy $policy)
-    {
+    public function __construct(
+        private readonly AccessPolicy $policy,
+        private readonly HandlerLocator $locator = new HandlerLocator()
+    ) {
     }
 
     /**
@@ -237,11 +239,7 @@ final class IpfGateway
 
         $module->registerClassPath();
 
-        $handler = icms_getModuleHandler($handlerName, $moduleName, null, true);
-
-        if (! $handler instanceof icms_ipf_Handler) {
-            throw new ToolCallException("Handler '{$handlerName}' in module '{$moduleName}' is not IPF-compatible.");
-        }
+        $handler = $this->locator->locate($moduleName, $handlerName);
 
         return $handler;
     }

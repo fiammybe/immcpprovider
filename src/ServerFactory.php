@@ -24,6 +24,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class ServerFactory
 {
+    private const SESSION_TTL = 2592000;
+
     private const SERVER_NAME = 'impresscms-mcp';
 
     private const SERVER_VERSION = '0.2.0';
@@ -66,7 +68,7 @@ final class ServerFactory
                 self::SERVER_VERSION,
                 'Exposes ImpressCMS IPF objects to MCP clients, restricted by the authenticated user\'s permissions.'
             )
-            ->setSession(new FileSessionStore(ICMS_TRUST_PATH . '/mcpapi/sessions'))
+            ->setSession(new FileSessionStore(ICMS_TRUST_PATH . '/mcpapi/sessions', self::SESSION_TTL))
             ->addTool(
                 [$tools, 'listModules'],
                 name: 'list_modules',
