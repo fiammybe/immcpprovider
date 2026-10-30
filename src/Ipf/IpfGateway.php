@@ -176,7 +176,7 @@ final class IpfGateway
         $object = $this->fetchObject($handler, $id);
         $serialized = $this->serializeObject($object, null);
 
-        if (! $handler->delete($object)) {
+        if (! $handler->delete($object, true)) {
             throw new ToolCallException('Failed to delete object.');
         }
 
@@ -519,7 +519,7 @@ final class IpfGateway
 
     private function persist(icms_ipf_Handler $handler, icms_ipf_Object $object, string $action): void
     {
-        if ($handler->insert($object)) {
+        if ($handler->insert($object, true)) {
             return;
         }
 
