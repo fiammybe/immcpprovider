@@ -350,7 +350,7 @@ final class IpfGateway
                 throw new ToolCallException("Filter '{$field}' must be a scalar value.");
             }
 
-            $criteria->add(new icms_db_criteria_Item((string) $field, $value));
+            $criteria->add(new SafeCriteriaItem((string) $field, $value));
         }
 
         $criteria->setStart(max(0, $start));
