@@ -16,6 +16,9 @@ define('_AM_MCPAPI_DASHBOARD_ACTIVE_TOKENS', 'Active access tokens');
 define('_AM_MCPAPI_DASHBOARD_PERMISSIONS', 'Who can connect');
 define('_AM_MCPAPI_DASHBOARD_PERMISSIONS_HELP', 'Only members of groups that have access to this module can authorize an application and use the MCP server. Adjust this under System, Modules, Permissions. Once connected, everyone works within their own permissions on each module; creating, changing and deleting data additionally requires administrator rights on that module.');
 define('_AM_MCPAPI_DASHBOARD_ACTIVITY', 'Recent activity (newest first)');
+define('_AM_MCPAPI_DASHBOARD_CANDIDATES', 'Modules offering MCP context');
+define('_AM_MCPAPI_DASHBOARD_CANDIDATES_HELP', 'These active modules ship MCP context for Claude that has not been activated yet. Update them from System, Modules to push their context into mcpapi. Nothing here is changed automatically.');
+define('_AM_MCPAPI_DASHBOARD_CANDIDATES_NONE', 'None found.');
 define('_AM_MCPAPI_CHECK_OK', 'OK');
 define('_AM_MCPAPI_CHECK_FAILED', 'Problem');
 
