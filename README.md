@@ -71,6 +71,12 @@ The web server must pass the `Authorization` header to PHP. On Apache with CGI/F
 
 Reading follows the module access permission and, where a handler declares a `view` permission, the object permissions. The `system` module and this module are never exposed, and password-type fields are never returned.
 
+### Module context and skills
+
+`describe_handler` and `list_modules` include any stored context (field and handler descriptions, and relations between handlers) alongside the raw schema. This context can come from the module itself - see [`docs/module-integration.md`](docs/module-integration.md) for how a module pushes it - or from an mcpapi administrator, who can add or replace it under the module's **Module context** admin page. The two sources are always shown side by side; an admin entry never replaces a module's own entry.
+
+mcpapi also exposes MCP **prompts**: named, free-text "skills" an administrator writes under **Skills** in the admin pages, for site-specific or cross-module procedures no single module could describe on its own. A skill can be scoped to one module (then only listed to callers who can read that module) or left unscoped to appear for every caller.
+
 ## How the login works
 
 The module is an OAuth 2.1 authorization server (authorization code with PKCE, refresh tokens, dynamic client registration) built on `league/oauth2-server`, with the MCP transport from `mcp/sdk`. Tokens, clients and authorization codes are stored as IPF objects in the module's own tables. The consent page is a normal ImpressCMS page behind the normal site login. The admin pages list connected applications and issued tokens and can revoke them.
