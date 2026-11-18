@@ -12,7 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "ImMcpProvider\\": "src/"
+            "ImMcpProvider\\OAuth\\": "OAuthServer/",
+            "ImMcpProvider\\": "."
         }
     },
     "config": {

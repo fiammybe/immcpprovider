@@ -1,4 +1,5 @@
-/vendor/
+/src/vendor/
 /.idea/
 /.ai/
 /.claude/
+/build/
