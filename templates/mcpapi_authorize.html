@@ -1,0 +1,17 @@
+<div class="mcpapi-authorize">
+    <h2><{$mcpapi_lang.title|escape}></h2>
+
+    <{if $mcpapi.error}>
+        <p class="alert alert-danger"><{$mcpapi.error|escape}></p>
+    <{else}>
+        <p><{$mcpapi_lang.intro|escape}></p>
+        <p><{$mcpapi_lang.redirect|escape}></p>
+        <p><{$mcpapi_lang.scope|escape}></p>
+
+        <form method="post" action="<{$mcpapi.action|escape}>">
+            <{$mcpapi.token_html}>
+            <button type="submit" name="decision" value="approve" class="btn btn-primary"><{$mcpapi_lang.approve|escape}></button>
+            <button type="submit" name="decision" value="deny" class="btn btn-secondary"><{$mcpapi_lang.deny|escape}></button>
+        </form>
+    <{/if}>
+</div>

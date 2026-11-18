@@ -1,0 +1,54 @@
+<div class="mcpapi-admin">
+    <h3><{$mcpapi_lang.connect|escape}></h3>
+    <p><{$mcpapi_lang.connect_help|escape}></p>
+    <table class="outer" cellspacing="1">
+        <tr>
+            <th><{$mcpapi_lang.server_url|escape}></th>
+            <td class="even"><code><{$mcpapi.server_url|escape}></code></td>
+        </tr>
+    </table>
+
+    <h3><{$mcpapi_lang.discovery|escape}></h3>
+    <table class="outer" cellspacing="1">
+        <tr>
+            <th><{$mcpapi_lang.resource_metadata|escape}></th>
+            <td class="even"><a href="<{$mcpapi.resource_metadata_url|escape}>"><{$mcpapi.resource_metadata_url|escape}></a></td>
+        </tr>
+        <tr>
+            <th><{$mcpapi_lang.server_metadata|escape}></th>
+            <td class="odd"><a href="<{$mcpapi.server_metadata_url|escape}>"><{$mcpapi.server_metadata_url|escape}></a></td>
+        </tr>
+        <tr>
+            <th><{$mcpapi_lang.wellknown|escape}></th>
+            <td class="even"><a href="<{$mcpapi.wellknown_url|escape}>"><{$mcpapi.wellknown_url|escape}></a></td>
+        </tr>
+    </table>
+
+    <h3><{$mcpapi_lang.checks|escape}></h3>
+    <table class="outer" cellspacing="1">
+        <{foreach from=$mcpapi.checks item=check}>
+            <tr>
+                <th><{$check.label|escape}></th>
+                <td class="<{cycle values='even,odd'}>">
+                    <{if $check.ok}><strong style="color: #2e7d32;"><{$mcpapi_lang.ok|escape}></strong><{else}><strong style="color: #c62828;"><{$mcpapi_lang.failed|escape}></strong><{/if}>
+                    <{if $check.detail}> <code><{$check.detail|escape}></code><{/if}>
+                </td>
+            </tr>
+        <{/foreach}>
+    </table>
+
+    <h3><{$mcpapi_lang.stats|escape}></h3>
+    <table class="outer" cellspacing="1">
+        <tr>
+            <th><{$mcpapi_lang.clients|escape}></th>
+            <td class="even"><{$mcpapi.clients|escape}></td>
+        </tr>
+        <tr>
+            <th><{$mcpapi_lang.active_tokens|escape}></th>
+            <td class="odd"><{$mcpapi.active_tokens|escape}></td>
+        </tr>
+    </table>
+
+    <h3><{$mcpapi_lang.permissions|escape}></h3>
+    <p><{$mcpapi_lang.permissions_help|escape}></p>
+</div>
