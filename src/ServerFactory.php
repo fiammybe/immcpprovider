@@ -13,6 +13,7 @@ use ImMcpProvider\OAuth\OAuthMetadata;
 use ImMcpProvider\OAuth\OAuthServices;
 use ImMcpProvider\Security\AccessPolicy;
 use ImMcpProvider\Tool\IpfTools;
+use ImMcpProvider\Tool\SkillTools;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
 use Mcp\Server\Session\FileSessionStore;
@@ -21,6 +22,7 @@ use Mcp\Server\Transport\Http\Middleware\CorsMiddleware;
 use Mcp\Server\Transport\StreamableHttpTransport;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ServerRequestInterface;
+use mod_mcpapi_Skill;
 
 final class ServerFactory
 {
@@ -62,7 +64,7 @@ final class ServerFactory
     {
         $tools = new IpfTools(new IpfGateway(new AccessPolicy()));
 
-        return Server::builder()
+        $builder = Server::builder()
             ->setServerInfo(
                 self::SERVER_NAME,
                 self::SERVER_VERSION,
@@ -162,8 +164,24 @@ final class ServerFactory
                     ],
                     ['module', 'handler', 'id']
                 )
-            )
-            ->build();
+            );
+
+        foreach ((new SkillTools())->visibleSkills() as $skill) {
+            $builder->addPrompt(
+                $this->skillPromptHandler($skill),
+                name: (string) $skill->getVar('name', 'n'),
+                title: (string) $skill->getVar('title', 'n'),
+                description: (string) $skill->getVar('title', 'n')
+            );
+        }
+
+        return $builder->build();
+    }
+
+    /** @return \Closure(): array<int, array<string, string>> */
+    private function skillPromptHandler(mod_mcpapi_Skill $skill): \Closure
+    {
+        return static fn (): array => [$skill->toMcpPromptMessage()];
     }
 
     /** @return array<int, \Psr\Http\Server\MiddlewareInterface> */
