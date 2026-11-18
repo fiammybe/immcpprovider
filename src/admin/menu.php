@@ -13,6 +13,12 @@ $adminmenu[1]['link'] = 'admin/client.php';
 $adminmenu[2]['title'] = _MI_MCPAPI_MENU_TOKENS;
 $adminmenu[2]['link'] = 'admin/accesstoken.php';
 
+$adminmenu[3]['title'] = _MI_MCPAPI_MENU_CONTEXT;
+$adminmenu[3]['link'] = 'admin/context.php';
+
+$adminmenu[4]['title'] = _MI_MCPAPI_MENU_SKILLS;
+$adminmenu[4]['link'] = 'admin/skill.php';
+
 $headermenu = [];
 
 if (isset(icms::$module)) {

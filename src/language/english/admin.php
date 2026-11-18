@@ -39,3 +39,24 @@ define('_AM_MCPAPI_STATUS_ACTIVE', 'Active');
 define('_AM_MCPAPI_STATUS_EXPIRED', 'Expired');
 define('_AM_MCPAPI_STATUS_REVOKED', 'Revoked');
 define('_AM_MCPAPI_REVOKE', 'Revoke');
+
+define('_AM_MCPAPI_CONTEXT_MODULE', 'Module');
+define('_AM_MCPAPI_CONTEXT_SCOPE', 'Scope');
+define('_AM_MCPAPI_CONTEXT_HANDLER', 'Handler');
+define('_AM_MCPAPI_CONTEXT_FIELD', 'Field');
+define('_AM_MCPAPI_CONTEXT_DESCRIPTION', 'Description');
+define('_AM_MCPAPI_CONTEXT_RELATION_MODULE', 'Related module');
+define('_AM_MCPAPI_CONTEXT_RELATION_HANDLER', 'Related handler');
+define('_AM_MCPAPI_CONTEXT_SOURCE', 'Source');
+define('_AM_MCPAPI_CONTEXT_SOURCE_MODULE', 'Module');
+define('_AM_MCPAPI_CONTEXT_SOURCE_ADMIN', 'Admin');
+define('_AM_MCPAPI_CONTEXT_DELETE_CONFIRM', 'Delete this context entry?');
+define('_AM_MCPAPI_CONTEXT_READONLY_HELP', 'Entries provided by a module are replaced whenever that module is updated, so they cannot be edited or deleted here. Add an admin entry alongside it instead.');
+define('_AM_MCPAPI_CONTEXT_ADD', 'Add context');
+
+define('_AM_MCPAPI_SKILL_NAME', 'Name');
+define('_AM_MCPAPI_SKILL_TITLE', 'Title');
+define('_AM_MCPAPI_SKILL_INSTRUCTIONS', 'Instructions');
+define('_AM_MCPAPI_SKILL_MODULE', 'Module (leave empty for a site-wide skill)');
+define('_AM_MCPAPI_SKILL_DELETE_CONFIRM', 'Delete this skill?');
+define('_AM_MCPAPI_SKILL_ADD', 'Add skill');
