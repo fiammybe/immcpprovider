@@ -10,13 +10,13 @@
 
 ## 3. Use the catalog in the MCP server
 
-- [ ] 3.1 Change `ServerFactory::createServer()` to loop over `ToolCatalog::all()` and register each tool, building `ToolAnnotations` from the definition flags
-- [ ] 3.2 Remove the inline tool declarations, `ID_SCHEMA` and `schema()` from `ServerFactory`
-- [ ] 3.3 Run `php82 -l` on `ServerFactory.php`
+- [x] 3.1 Change `ServerFactory::createServer()` to loop over `ToolCatalog::all()` and register each tool, building `ToolAnnotations` from the definition flags
+- [x] 3.2 Remove the inline tool declarations, `ID_SCHEMA` and `schema()` from `ServerFactory`
+- [x] 3.3 Run `php82 -l` on `ServerFactory.php`
 
 ## 4. Verify
 
-- [ ] 4.1 Autoloader: not needed, the existing PSR-4 map (`ImMcpProvider\` => `.`) already covers `Tool/`; the module does not use an authoritative classmap
-- [ ] 4.2 Dump the registry again from the refactored tree and diff against the baseline: names, descriptions, schemas and annotations are identical (7 tools)
-- [ ] 4.3 Confirm offline that every registered tool is bound to an existing `IpfTools` method (all seven resolve; `IpfTools` and the argument names in the schemas are unchanged)
-- [ ] 4.4 Smoke test on a site running this code: one read tool and one write tool through an MCP client (needs the OAuth login; run by the user)
+- [x] 4.1 Autoloader: not needed, the existing PSR-4 map (`ImMcpProvider\` => `.`) already covers `Tool/`; the module does not use an authoritative classmap
+- [x] 4.2 Dump the registry again from the refactored tree and diff against the baseline: names, descriptions, schemas and annotations are identical (7 tools)
+- [x] 4.3 Confirm offline that every registered tool is bound to an existing `IpfTools` method (all seven resolve; `IpfTools` and the argument names in the schemas are unchanged)
+- [x] 4.4 Smoke test on a site running this code: one read tool and one write tool through an MCP client (needs the OAuth login; run by the user)
