@@ -1,8 +1,8 @@
 ## 1. Exposure flag
 
-- [ ] 1.1 Make `IpfGateway::isExposed()` read the `mcpapi_exposed` manifest key (only boolean `false` hides), hard-exclude the modules whose manifest is not ours (`system`, `protector` and `tools`) by name, treat a module that declares no IPF objects as not exposed, and remove the directory-name comparison
-- [ ] 1.2 Set `'mcpapi_exposed' => false` in `src/icms_version.php`
-- [ ] 1.3 Run `php82 -l` on the changed files
+- [x] 1.1 Make `IpfGateway::isExposed()` read the `mcpapi_exposed` manifest key (only boolean `false` hides), hard-exclude the modules whose manifest is not ours (`system`, `protector` and `tools`) by name, treat a module that declares no IPF objects as not exposed, and remove the directory-name comparison
+- [x] 1.2 Set `'mcpapi_exposed' => false` in `src/icms_version.php`
+- [x] 1.3 Run `php82 -l` on the changed files
 
 ## 2. Integration entry point
 
