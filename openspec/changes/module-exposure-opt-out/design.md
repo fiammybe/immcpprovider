@@ -57,6 +57,12 @@ The chat code and its planning are currently on `feature/admin-chat` and in open
 ### D8. Verification
 No test suite exists, so verification is a CLI harness that runs against the real site with an in-memory user: it checks the flag with true, false and absent, the `system`, `protector` and `tools` modules, a module without `object_items`, and the self-exclusion with the module reached through a symbolic link under another folder name. The MCP `tools/list` dump must stay identical to the one from `extract-tool-catalog`.
 
+**Verification results.** The harness ran against `colomaenpa` with user 1 held in memory and passed 45 checks: the four modules that declare IPF objects (`content`, `events`, `news`, `simplecart`) are listed; `system`, `protector` and `tools` are not listed and are refused by all six tools that take a module; stand-in modules are exposed or hidden as the rules say (flag absent, true, false, the string `'false'` and `0` do not hide, only boolean `false` does; no, empty or blank `object_items` hide); and this module's real manifest declares IPF objects, sets the flag and hides the module under four different folder names. The MCP registry dump stayed identical to the one from before the catalog refactor.
+
+One thing to keep in mind: the check reads the manifest file on every call, so the gateway and the manifest must ship together. While the old manifest was still deployed on `colomaenpa`, the real `mcpapi` was listed; a release zip replaces both files at once.
+
+**Fresh install.** The module has never been released, so there is no migration. The version is 0.6.1, written as a string because the modules table stores it as text. After a fresh install on `colomaenpa` (version 0.6.1, module id 12) the harness passed 52 checks with the real `mcpapi` hidden through its own manifest and only `content`, `events`, `news` and `simplecart` listed. The four OAuth tables, both templates, the group permissions and newly generated OAuth keys were created, and `api/` holds only `mcp.php`.
+
 ## Risks / Trade-offs
 
 - [A dependent module treats an internal class as API] → The README names the entry point as the only contract, and `ToolKit` is the only thing the chat is written against.

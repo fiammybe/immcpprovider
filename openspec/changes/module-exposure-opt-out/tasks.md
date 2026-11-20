@@ -8,15 +8,15 @@
 
 - [x] 2.1 Add `src/Tool/ToolKit.php` with `API_VERSION = 1`, `catalog()` and `tools()` (the shared `IpfTools`)
 - [x] 2.2 Make `ServerFactory` obtain its catalog and tools through `ToolKit`
-- [ ] 2.3 Document the contract in the README: the entry point, the API version rule, `ToolCallException`, how to load the provider's autoloader, how to detect a missing or inactive provider, the exposure flag, and a short example
-- [ ] 2.4 Raise the module version to 0.6.1
+- [x] 2.3 Document the contract in the README: the entry point, the API version rule, `ToolCallException`, how to load the provider's autoloader, how to detect a missing or inactive provider, the exposure flag, and a short example
+- [x] 2.4 Raise the module version to 0.6.1
 
 ## 3. Verification
 
-- [ ] 3.1 Write a CLI harness (outside the repository) with an in-memory user that checks the flag as true, false and absent, the `system`, `protector` and `tools` modules and a module without `object_items` (not listed, every tool refuses them), and `mcpapi` hiding itself when run from a symbolic link under another folder name
-- [ ] 3.2 Confirm the MCP registry dump is identical to the one taken for `extract-tool-catalog`
-- [ ] 3.3 On a local site: do a fresh install of this version (the module has never been released, so there is no update path to keep), confirm the setup output, the four OAuth tables, the templates and permissions, newly generated OAuth keys, that the MCP endpoint answers (`401` without a token, `200` metadata) and that the real module is hidden from the tools
-- [ ] 3.4 Reconnect an MCP client (the fresh install dropped the earlier client registrations and tokens) and confirm one read and one write call still work (needs the user's login)
+- [x] 3.1 Write a CLI harness (outside the repository) with an in-memory user that checks the flag as true, false and absent, the `system`, `protector` and `tools` modules and a module without `object_items` (not listed, every tool refuses them), and `mcpapi` hiding itself when run from a symbolic link under another folder name
+- [x] 3.2 Confirm the MCP registry dump is identical to the one taken for `extract-tool-catalog`
+- [x] 3.3 On a local site: do a fresh install of this version (the module has never been released, so there is no update path to keep), confirm the setup output, the four OAuth tables, the templates and permissions, newly generated OAuth keys, that the MCP endpoint answers (`401` without a token, `200` metadata) and that the real module is hidden from the tools
+- [x] 3.4 Reconnect an MCP client (the fresh install dropped the earlier client registrations and tokens) and confirm one read and one write call still work (needs the user's login)
 
 ## 4. Delivery (outward actions need the user's explicit approval)
 
