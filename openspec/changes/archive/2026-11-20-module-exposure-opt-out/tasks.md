@@ -20,6 +20,6 @@
 
 ## 4. Delivery (outward actions need the user's explicit approval)
 
-- [ ] 4.1 Create a new branch from `master` and bring in the `extract-tool-catalog` commits; add the commits of this change in the usual groups
-- [ ] 4.2 Push the branch to the Forgejo repository `beheerder/immcpprovider` and open a new PR whose description links to PR #5
-- [ ] 4.3 Close PR #5 with a comment that points to the new PR and to the preserved `feature/admin-chat` branch
+- [x] 4.1 Create a new branch from `master` and bring in the `extract-tool-catalog` commits; add the commits of this change in the usual groups
+- [x] 4.2 Push the branch to the Forgejo repository `beheerder/immcpprovider` and open a new PR whose description links to PR #5
+- [x] 4.3 Close PR #5 with a comment that points to the new PR and to the preserved `feature/admin-chat` branch
