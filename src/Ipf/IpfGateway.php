@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ImMcpProvider\Ipf;
 
+use ImMcpProvider\Module;
 use ImMcpProvider\Security\AccessPolicy;
 use icms;
 use icms_db_criteria_Compo;
@@ -12,12 +13,16 @@ use icms_ipf_Handler;
 use icms_ipf_Object;
 use icms_module_Object;
 use Mcp\Exception\ToolCallException;
+use mod_mcpapi_Context;
 
 final class IpfGateway
 {
     private const MAX_LIMIT = 100;
 
-    private const EXCLUDED_MODULES = ['system'];
+    /** Modules whose manifest is not ours to change, or that are management modules. */
+    private const EXCLUDED_MODULES = ['system', 'protector', 'tools'];
+
+    private const EXPOSED_FLAG = 'mcpapi_exposed';
 
     private const SENSITIVE_FIELDS = ['pass', 'pass_expired', 'salt', 'enc_type', 'actkey', 'token'];
 
@@ -45,12 +50,15 @@ final class IpfGateway
                 continue;
             }
 
+            $dirname = (string) $module->getVar('dirname');
+
             $modules[] = [
-                'dirname' => (string) $module->getVar('dirname'),
+                'dirname' => $dirname,
                 'name' => (string) $module->getVar('name'),
                 'version' => $module->getVar('version'),
                 'handlers' => $this->declaredHandlers($module),
                 'writable' => $this->policy->canAdministerModule($module),
+                'context' => $this->filterContext($dirname, mod_mcpapi_Context::SCOPE_MODULE, null, null),
             ];
         }
 
@@ -194,11 +202,31 @@ final class IpfGateway
             return false;
         }
 
-        if ($dirname === basename(dirname(__DIR__, 2))) {
+        // The tools only act on IPF handlers, so a module that declares none offers nothing.
+        if ($this->declaredHandlers($module) === []) {
+            return false;
+        }
+
+        if ($this->optsOut($module)) {
             return false;
         }
 
         return $this->policy->canReadModule($module);
+    }
+
+    /**
+     * A module opts out with 'mcpapi_exposed' => false in its manifest. getInfo() answers false for a missing key
+     * as well, so the whole info array is read to tell a missing key from an explicit false.
+     */
+    private function optsOut(icms_module_Object $module): bool
+    {
+        $info = $module->getInfo();
+
+        if (! is_array($info)) {
+            return false;
+        }
+
+        return array_key_exists(self::EXPOSED_FLAG, $info) && $info[self::EXPOSED_FLAG] === false;
     }
 
     private function resolveModule(string $moduleName): icms_module_Object
@@ -261,6 +289,36 @@ final class IpfGateway
         return $handlers;
     }
 
+    /**
+     * Stored context entries (from a module push and/or an mcpapi administrator) matching
+     * the given scope, handler and field. Both sources are returned side by side; neither
+     * overrides the other.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function filterContext(string $dirname, string $scope, ?string $handlerName, ?string $field): array
+    {
+        $entries = [];
+
+        foreach (Module::handler('context')->getForModule($dirname) as $entry) {
+            if ((string) $entry->getVar('scope', 'n') !== $scope) {
+                continue;
+            }
+
+            if ($handlerName !== null && (string) $entry->getVar('handler', 'n') !== $handlerName) {
+                continue;
+            }
+
+            if ($field !== null && (string) $entry->getVar('field', 'n') !== $field) {
+                continue;
+            }
+
+            $entries[] = $entry->toMcpArray();
+        }
+
+        return $entries;
+    }
+
     /** @return array<string, mixed> */
     private function describeResolvedHandler(
         icms_module_Object $module,
@@ -278,6 +336,7 @@ final class IpfGateway
                 'persistent' => (bool) ($definition['persistent'] ?? true),
                 'writable' => $canWrite && $this->isWritableField($handler, $name, $definition),
                 'caption' => $definition['form_caption'] ?? '',
+                'context' => $this->filterContext($moduleName, mod_mcpapi_Context::SCOPE_FIELD, $handlerName, $name),
             ];
         }
 
@@ -287,6 +346,7 @@ final class IpfGateway
             'key' => $handler->keyName,
             'identifier' => $handler->identifierName,
             'writable' => $canWrite,
+            'context' => $this->filterContext($moduleName, mod_mcpapi_Context::SCOPE_HANDLER, $handlerName, null),
             'fields' => $fields,
         ];
     }

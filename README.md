@@ -69,13 +69,57 @@ The web server must pass the `Authorization` header to PHP. On Apache with CGI/F
 | `get_object` | One object by identifier |
 | `create_object`, `update_object`, `delete_object` | Change data. Requires administrator rights on the module |
 
-Reading follows the module access permission and, where a handler declares a `view` permission, the object permissions. The `system` module and this module are never exposed, and password-type fields are never returned.
+Reading follows the module access permission and, where a handler declares a `view` permission, the object permissions. Password-type fields are never returned.
+
+Only modules that declare IPF objects (`object_items`) can be reached, because that is what the tools work on. These are never reachable, whatever the permissions: the `system`, `protector` and `tools` modules, any module without IPF objects, and any module that sets `'mcpapi_exposed' => false` in its `icms_version.php`. This module does so itself, so its clients and tokens cannot be read through the tools. A module that holds data that must stay out of reach should set the same flag.
+
+### Module context and skills
+
+`describe_handler` and `list_modules` include any stored context (field and handler descriptions, and relations between handlers) alongside the raw schema. This context can come from the module itself - see [`docs/module-integration.md`](docs/module-integration.md) for how a module pushes it - or from an mcpapi administrator, who can add or replace it under the module's **Module context** admin page. The two sources are always shown side by side; an admin entry never replaces a module's own entry.
+
+mcpapi also exposes MCP **prompts**: named, free-text "skills" an administrator writes under **Skills** in the admin pages, for site-specific or cross-module procedures no single module could describe on its own. A skill can be scoped to one module (then only listed to callers who can read that module) or left unscoped to appear for every caller.
 
 ## How the login works
 
 The module is an OAuth 2.1 authorization server (authorization code with PKCE, refresh tokens, dynamic client registration) built on `league/oauth2-server`, with the MCP transport from `mcp/sdk`. Tokens, clients and authorization codes are stored as IPF objects in the module's own tables. The consent page is a normal ImpressCMS page behind the normal site login. The admin pages list connected applications and issued tokens and can revoke them.
 
 Access tokens last one hour and refresh tokens 30 days. Refresh tokens are rotated on use.
+
+## Using the tools from another module
+
+Another ImpressCMS module can use the same tools, for instance to build a chat on top of them. The tools run with the permissions of the signed-in user (`icms::$user`) and apply the same exclusions as the MCP endpoint, so a dependent module cannot widen access.
+
+The only supported entry point is `ImMcpProvider\Tool\ToolKit`. Do not build `IpfGateway` or `AccessPolicy` yourself.
+
+```php
+use ImMcpProvider\Tool\ToolKit;
+
+// 1. Is the provider installed and active? This needs no provider code.
+$module = icms::handler('icms_module')->getByDirname('mcpapi');
+
+if (! is_object($module) || ! (bool) $module->getVar('isactive')) {
+    // Show a message that the MCP provider module is required.
+}
+
+// 2. Load its autoloader and check the API version (version 0.3 has no ToolKit at all).
+require_once ICMS_ROOT_PATH . '/modules/mcpapi/vendor/autoload.php';
+
+if (! class_exists(ToolKit::class) || ToolKit::API_VERSION < 1) {
+    // Show a message that a newer MCP provider is required.
+}
+
+// 3. Use the tools.
+$tools = ToolKit::tools();
+$result = $tools->listObjects('news', 'article', [], ['article_id', 'title'], 0, 5);
+
+foreach (ToolKit::catalog()->all() as $definition) {
+    // $definition->name, ->description, ->inputSchema, ->readOnly, ->method
+}
+```
+
+- **API version.** `ToolKit::API_VERSION` is an integer that is raised only when a change can break a dependent module, such as a removed or renamed tool, definition field or error type. Version 0.6.1 of this module offers API version 1.
+- **Failures.** Tools throw `Mcp\Exception\ToolCallException`, so the provider's autoloader (which includes the MCP SDK) must be loaded.
+- **Keep your own data out of the tools.** Set `'mcpapi_exposed' => false` in the manifest of your module.
 
 ## Limitations
 

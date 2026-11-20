@@ -1,6 +1,7 @@
 <?php
 
 use ImMcpProvider\Module;
+use ImMcpProvider\Setup\ModuleScan;
 use ImMcpProvider\Setup\Requirements;
 use ImMcpProvider\Support\ActivityLog;
 
@@ -24,6 +25,7 @@ $icmsAdminTpl->assign('mcpapi', [
     'checks' => (new Requirements())->checks(),
     'clients' => Module::identifiedHandler('client')->getCount(),
     'active_tokens' => Module::identifiedHandler('accesstoken')->getCount($activeCriteria),
+    'context_candidates' => (new ModuleScan())->candidates(),
 ]);
 $icmsAdminTpl->assign('mcpapi_lang', [
     'connect' => _AM_MCPAPI_DASHBOARD_CONNECT,
@@ -41,6 +43,9 @@ $icmsAdminTpl->assign('mcpapi_lang', [
     'permissions_help' => _AM_MCPAPI_DASHBOARD_PERMISSIONS_HELP,
     'ok' => _AM_MCPAPI_CHECK_OK,
     'failed' => _AM_MCPAPI_CHECK_FAILED,
+    'candidates' => _AM_MCPAPI_DASHBOARD_CANDIDATES,
+    'candidates_help' => _AM_MCPAPI_DASHBOARD_CANDIDATES_HELP,
+    'candidates_none' => _AM_MCPAPI_DASHBOARD_CANDIDATES_NONE,
 ]);
 $icmsAdminTpl->display('db:mcpapi_admin_index.html');
 

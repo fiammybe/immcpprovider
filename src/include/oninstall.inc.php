@@ -2,7 +2,7 @@
 
 defined('ICMS_ROOT_PATH') or die('ICMS root path not defined');
 
-defined('MCPAPI_DB_VERSION') or define('MCPAPI_DB_VERSION', 1);
+defined('MCPAPI_DB_VERSION') or define('MCPAPI_DB_VERSION', 2);
 
 function mcpapi_verifySetup($module): bool
 {

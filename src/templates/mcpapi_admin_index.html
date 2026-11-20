@@ -51,4 +51,18 @@
 
     <h3><{$mcpapi_lang.permissions|escape}></h3>
     <p><{$mcpapi_lang.permissions_help|escape}></p>
+
+    <h3><{$mcpapi_lang.candidates|escape}></h3>
+    <p><{$mcpapi_lang.candidates_help|escape}></p>
+    <{if $mcpapi.context_candidates}>
+        <table class="outer" cellspacing="1">
+            <{foreach from=$mcpapi.context_candidates item=candidate}>
+                <tr>
+                    <td class="<{cycle values='even,odd'}>"><{$candidate.name|escape}> (<{$candidate.dirname|escape}>)</td>
+                </tr>
+            <{/foreach}>
+        </table>
+    <{else}>
+        <p><{$mcpapi_lang.candidates_none|escape}></p>
+    <{/if}>
 </div>

@@ -16,6 +16,9 @@ define('_AM_MCPAPI_DASHBOARD_ACTIVE_TOKENS', 'Active access tokens');
 define('_AM_MCPAPI_DASHBOARD_PERMISSIONS', 'Who can connect');
 define('_AM_MCPAPI_DASHBOARD_PERMISSIONS_HELP', 'Only members of groups that have access to this module can authorize an application and use the MCP server. Adjust this under System, Modules, Permissions. Once connected, everyone works within their own permissions on each module; creating, changing and deleting data additionally requires administrator rights on that module.');
 define('_AM_MCPAPI_DASHBOARD_ACTIVITY', 'Recent activity (newest first)');
+define('_AM_MCPAPI_DASHBOARD_CANDIDATES', 'Modules offering MCP context');
+define('_AM_MCPAPI_DASHBOARD_CANDIDATES_HELP', 'These active modules ship MCP context for Claude that has not been activated yet. Update them from System, Modules to push their context into mcpapi. Nothing here is changed automatically.');
+define('_AM_MCPAPI_DASHBOARD_CANDIDATES_NONE', 'None found.');
 define('_AM_MCPAPI_CHECK_OK', 'OK');
 define('_AM_MCPAPI_CHECK_FAILED', 'Problem');
 
@@ -36,3 +39,24 @@ define('_AM_MCPAPI_STATUS_ACTIVE', 'Active');
 define('_AM_MCPAPI_STATUS_EXPIRED', 'Expired');
 define('_AM_MCPAPI_STATUS_REVOKED', 'Revoked');
 define('_AM_MCPAPI_REVOKE', 'Revoke');
+
+define('_AM_MCPAPI_CONTEXT_MODULE', 'Module');
+define('_AM_MCPAPI_CONTEXT_SCOPE', 'Scope');
+define('_AM_MCPAPI_CONTEXT_HANDLER', 'Handler');
+define('_AM_MCPAPI_CONTEXT_FIELD', 'Field');
+define('_AM_MCPAPI_CONTEXT_DESCRIPTION', 'Description');
+define('_AM_MCPAPI_CONTEXT_RELATION_MODULE', 'Related module');
+define('_AM_MCPAPI_CONTEXT_RELATION_HANDLER', 'Related handler');
+define('_AM_MCPAPI_CONTEXT_SOURCE', 'Source');
+define('_AM_MCPAPI_CONTEXT_SOURCE_MODULE', 'Module');
+define('_AM_MCPAPI_CONTEXT_SOURCE_ADMIN', 'Admin');
+define('_AM_MCPAPI_CONTEXT_DELETE_CONFIRM', 'Delete this context entry?');
+define('_AM_MCPAPI_CONTEXT_READONLY_HELP', 'Entries provided by a module are replaced whenever that module is updated, so they cannot be edited or deleted here. Add an admin entry alongside it instead.');
+define('_AM_MCPAPI_CONTEXT_ADD', 'Add context');
+
+define('_AM_MCPAPI_SKILL_NAME', 'Name');
+define('_AM_MCPAPI_SKILL_TITLE', 'Title');
+define('_AM_MCPAPI_SKILL_INSTRUCTIONS', 'Instructions');
+define('_AM_MCPAPI_SKILL_MODULE', 'Module (leave empty for a site-wide skill)');
+define('_AM_MCPAPI_SKILL_DELETE_CONFIRM', 'Delete this skill?');
+define('_AM_MCPAPI_SKILL_ADD', 'Add skill');

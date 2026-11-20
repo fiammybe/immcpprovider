@@ -7,3 +7,5 @@ define('_MI_MCPAPI_DESC', "Lets MCP clients such as Claude work with this site t
 define('_MI_MCPAPI_MENU_DASHBOARD', 'Dashboard');
 define('_MI_MCPAPI_MENU_CLIENTS', 'Connected applications');
 define('_MI_MCPAPI_MENU_TOKENS', 'Access tokens');
+define('_MI_MCPAPI_MENU_CONTEXT', 'Module context');
+define('_MI_MCPAPI_MENU_SKILLS', 'Skills');
