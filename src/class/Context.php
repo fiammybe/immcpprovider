@@ -23,7 +23,9 @@ class mod_mcpapi_Context extends icms_ipf_Object
         $this->quickInitVar('scope', XOBJ_DTYPE_TXTBOX, true, '', '', self::SCOPE_MODULE);
         $this->quickInitVar('handler', XOBJ_DTYPE_TXTBOX, false);
         $this->quickInitVar('field', XOBJ_DTYPE_TXTBOX, false);
-        $this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, false);
+        // XOBJ_DTYPE_SOURCE, not XOBJ_DTYPE_TXTAREA: this is plain text, and TXTAREA would
+        // run it through the core's HTML purifier on save, appending a "filtered" marker.
+        $this->quickInitVar('description', XOBJ_DTYPE_SOURCE, false);
         $this->quickInitVar('relation_module', XOBJ_DTYPE_TXTBOX, false);
         $this->quickInitVar('relation_handler', XOBJ_DTYPE_TXTBOX, false);
         $this->quickInitVar('source', XOBJ_DTYPE_TXTBOX, true, '', '', self::SOURCE_ADMIN);
