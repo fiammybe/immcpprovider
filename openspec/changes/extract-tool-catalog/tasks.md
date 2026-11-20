@@ -1,12 +1,12 @@
 ## 1. Baseline
 
-- [ ] 1.1 Capture a reference snapshot of the registered tools before the refactor. Done offline with a scratch script that builds the server from the source tree and dumps the SDK tool registry (no login needed); snapshot kept outside the repo
+- [x] 1.1 Capture a reference snapshot of the registered tools before the refactor. Done offline with a scratch script that builds the server from the source tree and dumps the SDK tool registry (no login needed); snapshot kept outside the repo
 
 ## 2. Catalog (foundation, not used yet)
 
-- [ ] 2.1 Add `src/Tool/ToolDefinition.php`: readonly value object (`name`, `description`, `inputSchema`, `readOnly`, `destructive`, `idempotent`, `method`)
-- [ ] 2.2 Add `src/Tool/ToolCatalog.php` with `all()` returning the seven definitions in the current order, moving `ID_SCHEMA` and the `schema()` helper from `ServerFactory` and keeping every string and schema verbatim (including the `\stdClass` for empty `properties`)
-- [ ] 2.3 Run `php82 -l` on both new files
+- [x] 2.1 Add `src/Tool/ToolDefinition.php`: readonly value object (`name`, `description`, `inputSchema`, `readOnly`, `destructive`, `idempotent`, `method`)
+- [x] 2.2 Add `src/Tool/ToolCatalog.php` with `all()` returning the seven definitions in the current order, moving `ID_SCHEMA` and the `schema()` helper from `ServerFactory` and keeping every string and schema verbatim (including the `\stdClass` for empty `properties`)
+- [x] 2.3 Run `php82 -l` on both new files
 
 ## 3. Use the catalog in the MCP server
 
