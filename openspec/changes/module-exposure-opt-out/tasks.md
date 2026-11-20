@@ -6,8 +6,8 @@
 
 ## 2. Integration entry point
 
-- [ ] 2.1 Add `src/Tool/ToolKit.php` with `API_VERSION = 1`, `catalog()` and `tools()` (the shared `IpfTools`)
-- [ ] 2.2 Make `ServerFactory` obtain its catalog and tools through `ToolKit`
+- [x] 2.1 Add `src/Tool/ToolKit.php` with `API_VERSION = 1`, `catalog()` and `tools()` (the shared `IpfTools`)
+- [x] 2.2 Make `ServerFactory` obtain its catalog and tools through `ToolKit`
 - [ ] 2.3 Document the contract in the README: the entry point, the API version rule, `ToolCallException`, how to load the provider's autoloader, how to detect a missing or inactive provider, the exposure flag, and a short example
 - [ ] 2.4 Raise the module version to 0.6.1
 

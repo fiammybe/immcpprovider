@@ -7,13 +7,10 @@ namespace ImMcpProvider;
 use ImMcpProvider\Http\AuthenticatedUserMiddleware;
 use ImMcpProvider\Http\MethodGuardMiddleware;
 use ImMcpProvider\Http\OriginGuardMiddleware;
-use ImMcpProvider\Ipf\IpfGateway;
 use ImMcpProvider\OAuth\BearerTokenValidator;
 use ImMcpProvider\OAuth\OAuthMetadata;
 use ImMcpProvider\OAuth\OAuthServices;
-use ImMcpProvider\Security\AccessPolicy;
-use ImMcpProvider\Tool\IpfTools;
-use ImMcpProvider\Tool\ToolCatalog;
+use ImMcpProvider\Tool\ToolKit;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
 use Mcp\Server\Session\FileSessionStore;
@@ -56,7 +53,7 @@ final class ServerFactory
 
     public function createServer(): Server
     {
-        $tools = new IpfTools(new IpfGateway(new AccessPolicy()));
+        $tools = ToolKit::tools();
         $builder = Server::builder()
             ->setServerInfo(
                 self::SERVER_NAME,
@@ -65,7 +62,7 @@ final class ServerFactory
             )
             ->setSession(new FileSessionStore(ICMS_TRUST_PATH . '/mcpapi/sessions', self::SESSION_TTL));
 
-        foreach ((new ToolCatalog())->all() as $definition) {
+        foreach (ToolKit::catalog()->all() as $definition) {
             $builder->addTool(
                 [$tools, $definition->method],
                 name: $definition->name,
