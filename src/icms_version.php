@@ -4,7 +4,7 @@ defined('ICMS_ROOT_PATH') or die('ICMS root path not defined');
 
 $modversion = [
     'name' => _MI_MCPAPI_NAME,
-    'version' => 0.4,
+    'version' => '0.6.1',
     'description' => _MI_MCPAPI_DESC,
     'author' => 'David Janssens',
     'license' => 'Copyright (c) David Janssens',
@@ -12,11 +12,14 @@ $modversion = [
     'dirname' => 'mcpapi',
     'modname' => 'mcpapi',
 
+    // Keeps this module's own data (clients, tokens) out of the tools.
+    'mcpapi_exposed' => false,
+
     'iconsmall' => 'assets/image/icon_small.png',
     'iconbig' => 'assets/image/logo.png',
     'image' => 'assets/image/logo.png',
 
-    'status_version' => '0.4',
+    'status_version' => '0.6.1',
     'status' => 'Beta',
 
     'hasAdmin' => 1,

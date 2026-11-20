@@ -19,7 +19,10 @@ final class IpfGateway
 {
     private const MAX_LIMIT = 100;
 
-    private const EXCLUDED_MODULES = ['system'];
+    /** Modules whose manifest is not ours to change, or that are management modules. */
+    private const EXCLUDED_MODULES = ['system', 'protector', 'tools'];
+
+    private const EXPOSED_FLAG = 'mcpapi_exposed';
 
     private const SENSITIVE_FIELDS = ['pass', 'pass_expired', 'salt', 'enc_type', 'actkey', 'token'];
 
@@ -199,11 +202,31 @@ final class IpfGateway
             return false;
         }
 
-        if ($dirname === basename(dirname(__DIR__, 2))) {
+        // The tools only act on IPF handlers, so a module that declares none offers nothing.
+        if ($this->declaredHandlers($module) === []) {
+            return false;
+        }
+
+        if ($this->optsOut($module)) {
             return false;
         }
 
         return $this->policy->canReadModule($module);
+    }
+
+    /**
+     * A module opts out with 'mcpapi_exposed' => false in its manifest. getInfo() answers false for a missing key
+     * as well, so the whole info array is read to tell a missing key from an explicit false.
+     */
+    private function optsOut(icms_module_Object $module): bool
+    {
+        $info = $module->getInfo();
+
+        if (! is_array($info)) {
+            return false;
+        }
+
+        return array_key_exists(self::EXPOSED_FLAG, $info) && $info[self::EXPOSED_FLAG] === false;
     }
 
     private function resolveModule(string $moduleName): icms_module_Object
